@@ -13,6 +13,16 @@ function myFetch<T>(...args: any): Promise<TypedResponse<T>> {
 }
 
 export default class TodoAPIDataSourceImpl implements TodoDataSource {
+  async getTodo(id: string): Promise<Todo> {
+    const response = await myFetch<TodoAPIEntity>(`${BASE_URL}/todos/${id}`);
+    const data = await response.json();
+
+    return {
+      id: data.id,
+      title: data.title,
+      isCompleted: data.completed,
+    };
+  }
   async getTodos(): Promise<Todo[]> {
     const response = await myFetch<TodoAPIEntity[]>(`${BASE_URL}/todos`);
     const data = await response.json();
